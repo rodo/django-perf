@@ -77,17 +77,17 @@ class Command(BaseCommand):
         f = Faker()
         for i in range(nbvalues):
             values.append({"company": 3,
-                           "name": f.name(), 
-                           "street_address": f.street_address(),
+                           "name": f.name()[:300], 
+                           "street_address": f.street_address()[:300],
                            "email": "{}-{}".format(step,f.email()),
                            "value": f.random_number() + step,
                            "vali": f.random_number() + step,
-                           "country": f.country(), 
+                           "country": f.country()[:100], 
                            "latitude": f.latitude(),                            
                            "longitude": f.longitude(),
-                           "city": f.city(),
-                           "city_suffix": f.city_suffix(),
-                           "locale": f.locale(),
+                           "city": f.city()[:50],
+                           "city_suffix": f.city_suffix()[:20],
+                           "locale": f.locale()[:8],
                            })
 
         return values

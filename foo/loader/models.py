@@ -35,5 +35,3 @@ class ComplexItem(models.Model):
     city = models.CharField(max_length=50, db_index=True)
     locale = models.CharField(max_length=8, db_index=True)
 
-    class Meta:
-        unique_together = (('street_address','value'),('latitude','longitude'))
