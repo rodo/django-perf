@@ -23,7 +23,7 @@ class ComplexItem(models.Model):
     """The client as consummer
     """
     company = models.ForeignKey(Company)
-    name = models.CharField(max_length=30, db_index=True)
+    name = models.CharField(max_length=300, db_index=True)
     street_address = models.CharField(max_length=300)
     email = models.EmailField()
     value = models.FloatField()
