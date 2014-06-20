@@ -11,12 +11,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'djangofoo',                      # Or path to database file if using sqlite3.
+        'USER': 'rodo',                      # Not used with sqlite3.
+        'PASSWORD': 'rodo',                  # Not used with sqlite3.
+        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '6432',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -119,11 +119,38 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+    'django.contrib.admin',
+    'django_faker',    
+    'devserver',
+    'foo.bar',
+    'foo.loader',
+#    'debug_toolbar'
 )
+
+DEVSERVER_TRUNCATE_SQL = False
+#
+# CELERY
+#
+CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
+
+#BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+#CELERY_RESULT_BACKEND = 'amqp://guest:guest@localhost:5672//'
+
+BROKER_URL = 'redis://localhost/0'
+CELERY_RESULT_BACKEND = 'redis://localhost/0'
+
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT=['json']
+CELERY_TIMEZONE = 'Europe/Paris'
+CELERY_ENABLE_UTC = True
+
+CELERY_TASK_RESULT_EXPIRES = 60
+#
+#
+#
+FAKER_LOCALE = None
+FAKER_PROVIDERS = None
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

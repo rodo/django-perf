@@ -24,37 +24,33 @@ from django.core.management.base import BaseCommand
 from foo.loader.models import Item
 from optparse import make_option
 from faker import Faker
+from django.db import connection
 
 
 class Command(BaseCommand):
     help = 'Import datas'
     option_list = BaseCommand.option_list + (
-        make_option("-i",
-                    "--infile",
-                    dest="infile",
-                    help="input file",
-                    default=None),
-        make_option("-b", "--bench", dest="bench",
-                    help="bench id",
-                    default=None),
-        make_option("-t", "--threads", dest="threads",
-                    help="number of threads to do uploads, default 5",
-                    type="int",
-                    default=100)
+        make_option("-n",
+                    "--nbvalues",
+                    dest="nbvalues",
+                    help="number of values to input",
+                    default=10),
         )
 
     def handle(self, *args, **options):
         """
-        
+        Make
         """
-        nbvalues = 800
-
+        nbvalues = options['nbvalues']
+        print Item.objects.all().count()
         for bulk in [1, 2, 10]:
             values = self.valueset(nbvalues, bulk)
             start = time.time()
             self.bulkinsert(values, bulk)
             delta = time.time() - start
-            print "insert {} in {} seconds bulk {}".format(nbvalues, delta, bulk)
+            print "insert {} in {} seconds bulk {}".format(nbvalues,
+                                                           delta,
+                                                           bulk)
 
         values = self.valueset(nbvalues, bulk)
         start = time.time()
@@ -66,21 +62,21 @@ class Command(BaseCommand):
         start = time.time()
         self.insertcopy(values)
         delta = time.time() - start
-        print "copy {} in {} seconds".format(nbvalues, delta)
-
+        print "copy   {} in {} seconds".format(nbvalues, delta)
+        print Item.objects.all().count()
 
     def valueset(self, nbvalues, step):
         """
         Generate the values
         """
         values = []
-        
+
         f = Faker()
         for i in range(nbvalues):
-            values.append({"name": f.name(), 
-                           "datetms": f.latitude(), 
-                           "email": "{}-{}".format(step,f.email()),
-                           "value": f.random_number() + step })
+            values.append({"name": f.name(),
+                           "datetms": f.latitude(),
+                           "email": "{}-{}".format(step, f.email()),
+                           "value": f.random_number() + step})
 
         return values
 
@@ -89,9 +85,6 @@ class Command(BaseCommand):
         Save values in DB
         """
         for val in values:
-            """
-
-            """
             Item.objects.create(datetms=val['datetms'],
                                 name=val['name'],
                                 email=val['email'],
@@ -128,19 +121,22 @@ class Command(BaseCommand):
 
             Item.objects.bulk_create(poms)
 
-
     def insertcopy(self, values):
         """
-        Save values in DB
+        Use COPY to insert datas
         """
-        f = open('/tmp/foo','w')
-        for val in values:
-            """
+        fields = ['datetms', 'name', 'email', 'value']
+        strfields = ",".join(fields)
+        raw = 'COPY loader_item ({}) FROM \'{}\' USING DELIMITERS \',\';'
 
-            """
+        fpath = '/tmp/foo'
+        f = open(fpath, 'w')
+        for val in values:
             f.write('{},"{}","{}",{}\n'.format(val['datetms'],
                                            val['name'],
                                            val['email'],
                                            val['value']))
-            raw = 'COPY loader_item (datetms, name, email, value) FROM "/tmp/foo" USING DELIMITERS \',\';'
-            Item.objects.raw(raw)
+        f.close()
+        cursor = connection.cursor()
+        cursor.copy_from(open(fpath, 'r'), 'loader_item', columns=tuple(fields), sep=',')
+
