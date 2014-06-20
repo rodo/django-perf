@@ -1,0 +1,17 @@
+Django==1.6.5
+amqp==1.4.5
+anyjson==0.3.3
+argparse==1.2.1
+billiard==3.3.0.17
+celery==3.1.12
+distribute==0.6.24
+django-celery==3.1.10
+django-debug-toolbar==1.2.1
+django-devserver==0.8.0
+django-faker==0.2
+fake-factory==0.4.0
+kombu==3.0.19
+psycopg2==2.5.3
+pytz==2014.4
+sqlparse==0.1.11
+wsgiref==0.1.2

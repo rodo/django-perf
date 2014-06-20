@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd">
+<tsung loglevel="info" dumptraffic="protocol" version="1.0">
+
+  <clients>
+    <client host="localhost" />
+  </clients>
+
+  <servers>
+    <server host="127.0.0.1" port="8000" type="tcp" />
+  </servers>
+
+  <load>
+   <arrivalphase phase="1" duration="60" unit="second">
+     <users arrivalrate="1" unit="second"></users>
+   </arrivalphase>
+  </load>
+
+  <sessions>
+    <session name="loop10" probability="90" type="ts_http">
+      <for from="1" to="10" var="incloop">
+
+        <setdynvars sourcetype="random_number" start="1" end="1000">
+          <var name="rndint" />
+        </setdynvars>
+
+        <transaction name="index">
+          <request subst="true">
+
+            <http url="/index/%%_rndint%%" method="GET" version="1.1" ></http>
+          </request>
+        </transaction>
+
+        <setdynvars sourcetype="random_number" start="1" end="1000">
+          <var name="rndint" />
+        </setdynvars>
+
+        <transaction name="noindex">
+          <request subst="true">
+
+            <http url="/noindex/%%_rndint%%" method="GET" version="1.1" ></http>
+          </request>
+        </transaction>
+      </for>
+    </session>
+
+    <session name="loop20" probability="10" type="ts_http">
+      <for from="1" to="20" var="incloop">
+
+        <setdynvars sourcetype="random_number" start="1" end="1000">
+          <var name="rndint" />
+        </setdynvars>
+
+        <transaction name="index">
+          <request subst="true">
+
+            <http url="/index/%%_rndint%%" method="GET" version="1.1" ></http>
+          </request>
+        </transaction>
+
+        <setdynvars sourcetype="random_number" start="1" end="1000">
+          <var name="rndint" />
+        </setdynvars>
+
+        <transaction name="noindex">
+          <request subst="true">
+
+            <http url="/noindex/%%_rndint%%" method="GET" version="1.1" ></http>
+          </request>
+        </transaction>
+      </for>
+    </session>
+
+  </sessions>
+</tsung>
