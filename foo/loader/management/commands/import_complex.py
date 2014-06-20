@@ -28,18 +28,26 @@ from django.db import connection
 
 class Command(BaseCommand):
     help = 'Import complex datas'
- 
+     option_list = BaseCommand.option_list + (
+        make_option("-n",
+                    "--nbvalues",
+                    dest="nbvalues",
+                    type="int",
+                    help="number of values to input",
+                    default=10),
+        )
+
     def handle(self, *args, **options):
         """
         Main
         """
-        nbvalues = 400
+        nbvalues = options['nbvalues']
         bulk = 2
         self.companies()
 
         print ComplexItem.objects.all().count()
 
-        for bulk in [1, 2, 10]:
+        for bulk in [1, 2, 10, 50]:
             values = self.valueset(nbvalues, bulk)
             start = time.time()
             self.bulkinsert(values, bulk)
@@ -155,8 +163,8 @@ class Command(BaseCommand):
         Save values in DB
         """
         pattern = '%s%s{}\n' % ('"{}",' * 7, '{},' * 4)
-
-        f = open('/dev/shm/foo','w')
+        fpath = '/tmp/foo'
+        f = open(fpath,'w')
         for val in values:
             """
 
@@ -180,8 +188,8 @@ class Command(BaseCommand):
                                 'longitude', 'value', 'vali', 'company_id'])
         f.close()
         raw = 'COPY loader_complexitem ({}) FROM \'/dev/shm/foo\' USING DELIMITERS \',\';'.format(fields)
-        cursor = connection.cursor()
-        cursor.execute(raw)
+        cursor = connection.cursor()        
+        cursor.copy_from(open(fpath, 'r'), 'loader_complexitem', columns=tuple(fields), sep=',')
 
     def companies(self):
         """
