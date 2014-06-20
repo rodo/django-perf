@@ -13,7 +13,8 @@ def dobulk(values, low, high):
         poms.append(Item(datetms=val['datetms'],
                          name=val['name'],
                          email=val['email'],
-                         value=val['value']))
+                         value=val['value'],
+                         method='bulk'))
 
     Item.objects.bulk_create(poms)
 

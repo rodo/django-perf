@@ -5,6 +5,7 @@ from django.db import models
 class Item(models.Model):
     """The client as consummer
     """
+    method = models.CharField(max_length=10, default='unknown')
     name = models.CharField(max_length=300)
     datetms = models.FloatField()
     email = models.EmailField()
@@ -23,6 +24,7 @@ class ComplexItem(models.Model):
     """The client as consummer
     """
     company = models.ForeignKey(Company)
+    method = models.CharField(max_length=10, default='unknown')
     name = models.CharField(max_length=300, db_index=True)
     street_address = models.CharField(max_length=300)
     email = models.EmailField()
