@@ -4,6 +4,10 @@ from celery import shared_task
 from foo.loader.models import Item
 from foo.loader.utils import dobulk
 import time
+import os
+from uuid import uuid4
+from django.db import connection
+
 
 @shared_task
 def mul(x, y):
@@ -15,26 +19,37 @@ def insert(values):
     Save values in DB
     """
     for val in values:
-        Item.objects.create(datetms=val['datetms'],
-                            name=val['name'],
-                            email=val['email'],
-                            value=val['value'])
+        res = Item.objects.create(method="sequential",
+                                  datetms=val['datetms'],
+                                  name=val['name'],
+                                  email=val['email'],
+                                  value=val['value'])
 
 @shared_task
-def bulkinsert(self, values, nb):
+def bulkinsert(values, method):
     """
     Save values in DB
+
+    nb (integer): number of part to split the values on
     """
-    i = 0
-    nbval = len(values)
-    part = int(round(nbval / nb))
+    dobulk(values, method, low, high)
 
-    while i < nb:
-        poms = []
-        low = i * part
-        high = low + part
-        dobulk(values, low, high)
-        i = i + 1 
+@shared_task
+def copyinsert(values, method):
+    """
+    Use COPY to insert datas
+    """
+    fields = ['datetms', 'name', 'email', 'value', 'method']
 
-    if high < nbval:
-        dobulk(values, high, nbval)
+    fpath = os.path.join('/tmp/', str(uuid4()))
+    f = open(fpath, 'w')
+    for val in values:
+        f.write('{},"{}","{}",{},{}\n'.format(val['datetms'],
+                                                val['name'],
+                                                val['email'],
+                                                val['value'],
+                                                method))
+    f.close()
+    cursor = connection.cursor()
+    cursor.copy_from(open(fpath, 'r'), 'loader_item', columns=tuple(fields), sep=',')
+    unlink(fpath)

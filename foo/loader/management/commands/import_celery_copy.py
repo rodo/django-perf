@@ -23,9 +23,10 @@ import time
 from django.core.management.base import BaseCommand
 from foo.loader.models import Item
 from optparse import make_option
-from foo.loader.tasks import insert
-from foo.loader.models import Item
 from foo.loader.utils import valueset
+from foo.loader.tasks import copyinsert
+from foo.loader.models import Item
+
 
 class Command(BaseCommand):
     help = 'Import datas'
@@ -33,24 +34,50 @@ class Command(BaseCommand):
         make_option("-n",
                     "--nbvalues",
                     dest="nbvalues",
+                    type="int",
+                    help="number of values to input",
+                    default=10),
+        make_option("-b",
+                    "--bulk",
+                    dest="bulk",
+                    type="int",
                     help="number of values to input",
                     default=10),)
 
     def handle(self, *args, **options):
         """
-        Make
+        Main
         """
+        bulk = options['bulk']
         nbvalues = max(20, int(options['nbvalues']))
+        method = "copy{}".format(bulk)
+        Item.objects.filter(method=method).delete()
         print Item.objects.all().count()
+        #
+        # bulk
+        # 
 
-        values = valueset(nbvalues, 1)
-
+        values = valueset(nbvalues, bulk)
         start = time.time()
-        for val in values:
-            res = insert.delay([val])
+        self.launchbulk(values, bulk)
         delta = time.time() - start
-        print "insert {} in {} seconds linear".format(nbvalues, delta)
-        print Item.objects.all().count()
+        print "insert {} in {} seconds bulk {}".format(nbvalues, delta, bulk)
 
+    def launchbulk(self, values, nb):
+        """
+        values (array)
+        nb (interger) : number of task launched
+        """
+        i = 0
+        high = 0
+        nbval = len(values)
+        method = "copy{}".format(nb)
 
+        while high < nbval:
+            poms = []
+            low = i * nb
+            high = low + nb
+            copyinsert.delay(values[low:high], method)
+            i = i + 1 
 
+        print "launched {} bulk of {} element each  {}".format(i, nb, i * nb)
