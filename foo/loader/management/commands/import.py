@@ -33,6 +33,7 @@ class Command(BaseCommand):
         make_option("-n",
                     "--nbvalues",
                     dest="nbvalues",
+                    type="int",
                     help="number of values to input",
                     default=10),
         )
