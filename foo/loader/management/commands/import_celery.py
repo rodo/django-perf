@@ -24,7 +24,7 @@ from django.core.management.base import BaseCommand
 from foo.loader.models import Item
 from optparse import make_option
 from faker import Faker
-from foo.loader.tasks import mul, insert
+from foo.loader.tasks import mul, insert, bulkinsert
 from foo.loader.models import Item
 
 
@@ -51,6 +51,16 @@ class Command(BaseCommand):
             res = insert.delay([val])
         delta = time.time() - start
         print "insert {} in {} seconds linear".format(nbvalues, delta)
+        #
+        # bulk
+        # 
+        for bulk in [1, 2, 10, 50]:
+            values = self.valueset(nbvalues, bulk)
+            start = time.time()
+            bulkinsert.delay(values, bulk)
+            delta = time.time() - start
+            print "insert {} in {} seconds bulk {}".format(nbvalues, delta, bulk)
+
 
     def valueset(self, nbvalues, step):
         """

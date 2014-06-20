@@ -25,7 +25,7 @@ from foo.loader.models import Item
 from optparse import make_option
 from faker import Faker
 from django.db import connection
-
+from foo.loader.utils import dobulk
 
 class Command(BaseCommand):
     help = 'Import datas'
@@ -103,24 +103,11 @@ class Command(BaseCommand):
             poms = []
             low = i * part
             high = low + part
-
-            for val in values[low:high]:
-                poms.append(Item(datetms=val['datetms'],
-                                name=val['name'],
-                                email=val['email'],
-                                value=val['value']))
-
-            Item.objects.bulk_create(poms)
+            dobulk(values, low, high)
             i = i + 1
 
         if high < nbval:
-            for val in values[high:nbval]:
-                poms.append(Item(datetms=val['datetms'],
-                                name=val['name'],
-                                email=val['email'],
-                                value=val['value']))
-
-            Item.objects.bulk_create(poms)
+            dobulk(values, high, nbval)
 
     def insertcopy(self, values):
         """
