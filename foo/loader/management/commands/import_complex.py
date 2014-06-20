@@ -28,7 +28,7 @@ from django.db import connection
 
 class Command(BaseCommand):
     help = 'Import complex datas'
-     option_list = BaseCommand.option_list + (
+    option_list = BaseCommand.option_list + (
         make_option("-n",
                     "--nbvalues",
                     dest="nbvalues",
@@ -183,11 +183,11 @@ class Command(BaseCommand):
                                    val['company']
                                    ))
             
-            fields = ','.join(['name', 'street_address', 'email', 'country', 
-                                'city', 'city_suffix', 'locale', 'latitude', 
-                                'longitude', 'value', 'vali', 'company_id'])
+
         f.close()
-        raw = 'COPY loader_complexitem ({}) FROM \'/dev/shm/foo\' USING DELIMITERS \',\';'.format(fields)
+        fields = ['name', 'street_address', 'email', 'country', 
+                  'city', 'city_suffix', 'locale', 'latitude', 
+                  'longitude', 'value', 'vali', 'company_id']
         cursor = connection.cursor()        
         cursor.copy_from(open(fpath, 'r'), 'loader_complexitem', columns=tuple(fields), sep=',')
 
