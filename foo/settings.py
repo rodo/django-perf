@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     'devserver',
     'foo.bar',
     'foo.loader',
+    'foo.indexes',
 #    'debug_toolbar'
 )
 
