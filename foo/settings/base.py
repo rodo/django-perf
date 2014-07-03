@@ -11,12 +11,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'djangofoo',                      # Or path to database file if using sqlite3.
-        'USER': 'rodo',                      # Not used with sqlite3.
-        'PASSWORD': 'rodo',                  # Not used with sqlite3.
-        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '6432',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'djangoperf',
+        'USER': 'foobar',
+        'PASSWORD': 'changeme',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -92,6 +92,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'reversion.middleware.RevisionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -120,11 +121,17 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    # external apps
+    'django_extensions',
     'django_faker',    
     'devserver',
+    #
     'foo.bar',
     'foo.loader',
     'foo.indexes',
+    'foo.version',
+    'foo.july',
+    'reversion',
 #    'debug_toolbar'
 )
 

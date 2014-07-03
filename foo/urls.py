@@ -6,6 +6,7 @@ from django.views.generic.detail import DetailView
 
 from foo.bar.views import ClientDetail, ClientIdxDetail, ClientPrepDetail
 from foo.bar.models import Client
+from foo.july.models import Book
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -17,6 +18,7 @@ urlpatterns = patterns('',
                        url(r'^index/(?P<pk>\d+)$', ClientIdxDetail.as_view()),
                        url(r'^prepared/(?P<pk>\d+)$', ClientPrepDetail.as_view()),
                        url(r'^admin/', include(admin.site.urls)),
+                       url(r'^book/(?P<pk>\d+)$', DetailView.as_view(model=Book, template_name='default_detail.html')),
 )
 
 if settings.DEBUG:
