@@ -46,8 +46,10 @@ class Command(BaseCommand):
         """
         nbvalues = options['nbvalues']
         print "Will read %d Books" % nbvalues
-        print "Will read %d BigBooks" % nbvalues
+
         for aux in range(nbvalues):
-            rid = int(random.random() * 1000)
-            len(Book.objects.filter(pk=rid))
-            len(BigBook.objects.filter(pk=rid))
+            rid = int(random.random() * 1000000)
+            book = Book.objects.filter(pk=rid).last()
+
+            print book.title
+            
