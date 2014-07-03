@@ -24,8 +24,9 @@ from django.core.management.base import BaseCommand
 from optparse import make_option
 from faker import Faker
 from django.db import connection
-from foo.july.models import Company, Orga, Entry
+from foo.july.models import Editor, Author, Translator, Book, BigBook
 from django.contrib.sites.models import Site
+import random
 
 
 class Command(BaseCommand):
@@ -43,26 +44,10 @@ class Command(BaseCommand):
         """
         Make
         """
-        f = Faker()
         nbvalues = options['nbvalues']
-        print "Company : {}".format(Company.objects.all().count())
-
-        for i in range(nbvalues):
-            comp = Company.objects.create(site_id=2,
-                                          name=f.last_name()[:30])
-
-            for o in range(4):
-                Orga.objects.bulk_create([Orga(site_id=comp.site_id,
-                                               company=comp,
-                                               name=f.last_name()[:30])])
-
-                orga = Orga.objects.all().last()
-
-                for e in range(100):
-                    entry = Entry.objects.create(site_id=comp.site_id,
-                                                 name=f.last_name()[:30])
-                    entry.companies.add(comp)
-                    entry.orgas.add(orga)
-
-                
-        print "Company : {}".format(Company.objects.all().count())
+        print "Will read %d Books" % nbvalues
+        print "Will read %d BigBooks" % nbvalues
+        for aux in range(nbvalues):
+            rid = int(random.random() * 1000)
+            len(Book.objects.filter(pk=rid))
+            len(BigBook.objects.filter(pk=rid))
