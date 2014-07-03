@@ -42,7 +42,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """
-        Make
+        Read the table with a TextField but not using it
         """
         nbvalues = options['nbvalues']
         print "Will read %d Books" % nbvalues
@@ -52,4 +52,4 @@ class Command(BaseCommand):
             book = BigBook.objects.filter(pk=rid).last()
 
             print book.title
-            
+

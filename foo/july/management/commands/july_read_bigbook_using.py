@@ -42,14 +42,14 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """
-        Read the table book without TextField        
+        Read the table with a TextField but not using it, uses the 'using method
         """
         nbvalues = options['nbvalues']
         print "Will read %d Books" % nbvalues
 
         for aux in range(nbvalues):
             rid = int(random.random() * 1000000)
-            book = Book.objects.filter(pk=rid).last()
-
-            print book.title
+            book = BigBook.objects.filter(pk=rid).only('title').last()
+            if book:
+                print book.title
             
