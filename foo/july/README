@@ -1,1 +1,7 @@
 Tests sur les jointures et leur efficacité
+
+Collect stats
+=============
+
+$ dstat -trcdngy --output dstat.dat 10
+$ ./plot.sh
