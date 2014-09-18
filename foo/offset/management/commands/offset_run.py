@@ -24,7 +24,7 @@ from django.core.management.base import BaseCommand
 from optparse import make_option
 from django.core.paginator import Paginator
 from foo.offset.models import Log
-from foo.july.models import Book
+from foo.july.models import BigBook
 import logging
 from datetime import datetime
 
@@ -47,6 +47,14 @@ class Command(BaseCommand):
         self.keypage()
 
     def offset(self):
+        """
+        Use LIMIT / OFFSET
+
+        SELECT "july_book"."id", "july_book"."author_id", "july_book"."title", "july_book"."nbpages" 
+        FROM "july_book" 
+        ORDER BY "july_book"."id" ASC 
+        LIMIT 250 OFFSET 2500
+        """
         log = Log.objects.create(name='offset',
                                  start=datetime.now(),
                                  stop=datetime.now())
@@ -54,11 +62,11 @@ class Command(BaseCommand):
         nb = 0
 
 
-        books = Book.objects.all().order_by('pk')
+        books = BigBook.objects.all().order_by('pk')
         paginator = Paginator(books, 250)
         for p in paginator.page_range:
-            # loop on object_list
             for book in paginator.page(p).object_list:
+                # do what you want here
                 if book.nbpages > 500:
                     nb = nb + 1
 
@@ -68,22 +76,33 @@ class Command(BaseCommand):
 
 
     def keypage(self):
+        """
+        Use keyset pagination
+
+        SELECT "july_book"."id", "july_book"."author_id", "july_book"."title", "july_book"."nbpages" 
+        FROM "july_book" 
+        WHERE "july_book"."id" > 2500  
+        ORDER BY "july_book"."id" ASC 
+        LIMIT 250
+
+        """
         log = Log.objects.create(name='offset',
                                  start=datetime.now(),
                                  stop=datetime.now())
 
         nb = 0
-        i = 0
-        stop = False
+        keyid = 0
 
-        while stop == False:
-            books = Book.objects.filter(id__gt=i).order_by('pk')[:250]
+        while True:
+            books = BigBook.objects.filter(id__gt=keyid).order_by('id')[:250]
             for book in books:
+                keyid = book.id
+                # do want you want here
                 if book.nbpages > 500:
                     nb = nb + 1
-                i = book.id
+
             if len(books) < 250:
-                stop = True
+                break
 
         log.stop = datetime.now()
         log.save()
