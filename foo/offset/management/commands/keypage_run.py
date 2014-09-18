@@ -34,28 +34,33 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """
-        Use LIMIT / OFFSET
+        Use keyset pagination
 
         SELECT "july_book"."id", "july_book"."author_id", "july_book"."title", "july_book"."nbpages" 
         FROM "july_book" 
+        WHERE "july_book"."id" > 2500  
         ORDER BY "july_book"."id" ASC 
-        LIMIT 250 OFFSET 2500
+        LIMIT 250
+
         """
         log = Log.objects.create(name='offset',
                                  start=datetime.now(),
                                  stop=datetime.now())
 
         nb = 0
+        keyid = 0
 
-
-        books = BigBook.objects.all().order_by('pk')
-        paginator = Paginator(books, 250)
-        for p in paginator.page_range:
-            for book in paginator.page(p).object_list:
-                # do what you want here
+        while True:
+            books = BigBook.objects.filter(id__gt=keyid).order_by('id')[:250]
+            for book in books:
+                keyid = book.id
+                # do want you want here
                 if book.nbpages > 500:
                     nb = nb + 1
 
+            if len(books) < 250:
+                break
+
         log.stop = datetime.now()
         log.save()
-        print "offset", log.stop - log.start, nb
+        print "keypage", log.stop - log.start, nb
