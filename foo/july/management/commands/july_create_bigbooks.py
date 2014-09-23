@@ -20,12 +20,15 @@
 import sys
 import os
 import time
+from random import randrange
 from django.core.management.base import BaseCommand
 from optparse import make_option
 from faker import Faker
+from django.contrib.sites.models import Site
 from django.db import connection
 from foo.july.models import Editor, Author, Translator, Book, BigBook, BookComment
-from django.contrib.sites.models import Site
+from django.db.utils import IntegrityError
+
 
 
 class Command(BaseCommand):
@@ -36,7 +39,19 @@ class Command(BaseCommand):
                     dest="nbvalues",
                     type="int",
                     help="number of values to input",
-                    default=100),
+                    default=100),       
+        make_option("-s",
+                    "--sinopsis",
+                    dest="sinopsis",
+                    type="int",
+                    help="number of words in sinopsis",
+                    default=4500),
+        make_option("-i",
+                    "--intro",
+                    dest="intro",
+                    type="int",
+                    help="max number of words in sinopsis",
+                    default=8000)
         )
 
     def handle(self, *args, **options):
@@ -50,20 +65,32 @@ class Command(BaseCommand):
         nba = 0
         datas = []
         author = Author.objects.all().last()
-        sinopsis = " ".join(f.words(500))
+        sinopsis = " ".join(f.words(options['sinopsis']))
 
         for aux in range(nbvalues):
-            datas.append(BigBook(author=author,
+
+            datas.append(BigBook(keyid=randrange(1,8000000),
+                                 author=author,
                                  title=" ".join(f.words())[:30],
                                  sinopsis=sinopsis,
                                  nbpages=f.pyint()))
+
+
             nba += 1
             if nba > 9:
-                BigBook.objects.bulk_create(datas)
-                BigBook.objects.bulk_create([BigBook(author=author,
-                                                     title=" ".join(f.words())[:30],
-                                                     sinopsis=sinopsis,
-                                                     nbpages=f.pyint())])
+                try:
+                    BigBook.objects.bulk_create(datas)
+                except IntegrityError:
+                    pass
+                try:
+                    BigBook.objects.bulk_create([BigBook(keyid=randrange(1,8000000),
+                                                         author=author,
+                                                         title=" ".join(f.words())[:30],
+                                                         sinopsis=sinopsis,
+                                                         intro=" ".join(f.words(randrange(1000,options['intro']))),
+                                                         nbpages=f.pyint())])
+                except IntegrityError:
+                    pass
                 datas = []
                 nba = 0
 

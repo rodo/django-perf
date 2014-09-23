@@ -140,7 +140,7 @@ INSTALLED_APPS = (
     'foo.indexes',
     'foo.jointure',
     'foo.migre',
-    'foo.pgindexor',
+    'foo.json_dbindex',
     'foo.offset',
     'foo.july',
     'reversion',

@@ -27,6 +27,7 @@ from foo.offset.models import Log
 from foo.july.models import BigBook
 import logging
 from datetime import datetime
+from django.db import connection
 
 class Command(BaseCommand):
     help = 'Import datas'
@@ -34,28 +35,48 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """
-        Use LIMIT / OFFSET
+        Use keyset pagination
 
-        SELECT "july_book"."id", "july_book"."author_id", "july_book"."title", "july_book"."nbpages"
-        FROM "july_book"
-        ORDER BY "july_book"."id" ASC
-        LIMIT 250 OFFSET 2500
+        SELECT "july_book"."id", "july_book"."author_id", "july_book"."title", "july_book"."nbpages" 
+        FROM "july_book" 
+        WHERE "july_book"."id" > 2500  
+        ORDER BY "july_book"."id" ASC 
+        LIMIT 250
+
         """
-        log = Log.objects.create(name='offset',
+        key = 'keypage_prepare'
+        log = Log.objects.create(name=key,
                                  start=datetime.now(),
                                  stop=datetime.now())
 
         nb = 0
+        keyid = 0
 
-        books = BigBook.objects.all().order_by('keyid')
-        paginator = Paginator(books, 250)
-        for p in paginator.page_range:
-            for book in paginator.page(p).object_list:
-                # do what you want here
-                if book.nbpages > 500:
+        try:
+            cursor.execute('DEALLOCATE prepon')
+        except:
+            pass
+
+        qry = "PREPARE prepon (integer) AS SELECT keyid,* FROM july_bigbook WHERE keyid > $1 ORDER BY keyid ASC LIMIT 250"
+
+        cursor = connection.cursor()
+        try:
+            cursor.execute(qry)
+        except:
+            pass
+    
+        while True:
+            cursor.execute('EXECUTE prepon (%s)' % (keyid))
+            books = cursor.fetchall()
+            for book in books:
+                keyid = book[0]
+                # do want you want here
+                if book[1] > 500:
                     nb = nb + 1
+
+            if len(books) < 250:
+                break
 
         log.stop = datetime.now()
         log.save()
-
-        print "offset", log.stop - log.start, nb
+        print key, log.stop - log.start, nb

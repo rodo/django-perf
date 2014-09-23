@@ -43,7 +43,7 @@ class Command(BaseCommand):
         LIMIT 250
 
         """
-        log = Log.objects.create(name='offset',
+        log = Log.objects.create(name='keypage',
                                  start=datetime.now(),
                                  stop=datetime.now())
 
@@ -51,9 +51,9 @@ class Command(BaseCommand):
         keyid = 0
 
         while True:
-            books = BigBook.objects.filter(id__gt=keyid).order_by('id')[:250]
+            books = BigBook.objects.filter(keyid__gt=keyid).order_by('keyid')[:250]
             for book in books:
-                keyid = book.id
+                keyid = book.keyid
                 # do want you want here
                 if book.nbpages > 500:
                     nb = nb + 1

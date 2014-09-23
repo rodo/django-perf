@@ -48,9 +48,11 @@ class BigBook(models.Model):
     """
     The books
     """
+    keyid = models.IntegerField(unique=True)
     author = models.ForeignKey(Author)
     title = models.CharField(max_length=30)
     nbpages = models.IntegerField(default=0)
     editors = models.ManyToManyField(Editor, blank=True)
     translators = models.ManyToManyField(Translator, blank=True)
     sinopsis = models.TextField(blank=True)
+    intro = models.TextField(blank=True)

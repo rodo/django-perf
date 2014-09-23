@@ -47,12 +47,10 @@ class Command(BaseCommand):
         nbvalues = options['nbvalues']
         print "Book : {}".format(Book.objects.all().count())
 
-
         nba = 0
         datas = []
         author = Author.objects.all().last()
 
-        sinopsis = " ".join(f.words(500))
         i = 1
         for aux in range(nbvalues):
             i += 1
@@ -69,4 +67,3 @@ class Command(BaseCommand):
                 nba = 0
 
         print "Book : {}".format(Book.objects.all().count())
-
