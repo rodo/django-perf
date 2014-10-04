@@ -129,7 +129,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'south',
     # external apps
     'django_extensions',
     'django_faker',    
@@ -138,9 +137,7 @@ INSTALLED_APPS = (
     'foo.bar',
     'foo.loader',
     'foo.indexes',
-    'foo.jointure',
-    'foo.migre',
-    'foo.json_dbindex',
+#    'json_dbindex',
     'foo.offset',
     'foo.july',
     'reversion',

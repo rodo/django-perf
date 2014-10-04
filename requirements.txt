@@ -24,3 +24,4 @@ six==1.7.3
 sqlparse==0.1.11
 tornado==3.2.2
 wsgiref==0.1.2
+django-jsonfield==0.9.13
