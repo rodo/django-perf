@@ -69,7 +69,7 @@ class Command(BaseCommand):
             for book in books:
                 keyid = book[1]
                 # do want you want here
-                if book[5] > 500:
+                if book[1] > 500:
                     nb = nb + 1
 
             if len(books) < 250:
