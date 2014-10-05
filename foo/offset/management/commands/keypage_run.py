@@ -35,13 +35,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         """
         Use keyset pagination
-
-        SELECT "july_book"."id", "july_book"."author_id", "july_book"."title", "july_book"."nbpages" 
-        FROM "july_book" 
-        WHERE "july_book"."id" > 2500  
-        ORDER BY "july_book"."id" ASC 
-        LIMIT 250
-
         """
         log = Log.objects.create(name='keypage',
                                  start=datetime.now(),
@@ -51,7 +44,8 @@ class Command(BaseCommand):
         keyid = 0
 
         while True:
-            books = BigBook.objects.filter(keyid__gt=keyid).order_by('keyid')[:250]
+            queryset = BigBook.objects.filter(class=3)
+            books = queryset.filter(keyid__gt=keyid).order_by('keyid')[:250]
             for book in books:
                 keyid = book.keyid
                 # do want you want here

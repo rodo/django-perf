@@ -35,14 +35,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """
-        Use keyset pagination
-
-        SELECT "july_book"."id", "july_book"."author_id", "july_book"."title", "july_book"."nbpages" 
-        FROM "july_book" 
-        WHERE "july_book"."id" > 2500  
-        ORDER BY "july_book"."id" ASC 
-        LIMIT 250
-
+        Use prepare query on july_bigbook all fields
         """
         key = 'keypage_prepare'
         log = Log.objects.create(name=key,
@@ -51,27 +44,29 @@ class Command(BaseCommand):
 
         nb = 0
         keyid = 0
-
+        cursor = connection.cursor()
         try:
             cursor.execute('DEALLOCATE prepon')
         except:
             pass
 
-        qry = "PREPARE prepon (integer) AS SELECT keyid,* FROM july_bigbook WHERE keyid > $1 ORDER BY keyid ASC LIMIT 250"
+        qry = " ".join("PREPARE prepon (integer) AS ",
+                       "SELECT * FROM july_bigbook",
+                       "WHERE class= 3 AND keyid > $1",
+                       "ORDER BY keyid ASC LIMIT 250")
 
-        cursor = connection.cursor()
         try:
             cursor.execute(qry)
         except:
             pass
-    
+
         while True:
             cursor.execute('EXECUTE prepon (%s)' % (keyid))
             books = cursor.fetchall()
             for book in books:
-                keyid = book[0]
+                keyid = book[1]
                 # do want you want here
-                if book[1] > 500:
+                if book[5] > 500:
                     nb = nb + 1
 
             if len(books) < 250:
