@@ -70,7 +70,7 @@ class Command(BaseCommand):
         for aux in range(nbvalues):
 
             datas.append(BigBook(keyid=randrange(1,8000000),
-                                 class=randrange(1,10),
+                                 serie=randrange(1,10),
                                  author=author,
                                  title=" ".join(f.words())[:30],
                                  sinopsis=sinopsis,
@@ -85,7 +85,7 @@ class Command(BaseCommand):
                     pass
                 try:
                     BigBook.objects.bulk_create([BigBook(keyid=randrange(1,8000000),
-                                                         class=randrange(1,10),
+                                                         serie=randrange(1,10),
                                                          author=author,
                                                          title=" ".join(f.words())[:30],
                                                          sinopsis=sinopsis,
