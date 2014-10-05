@@ -53,10 +53,10 @@ class Command(BaseCommand):
         except:
             pass
 
-        qry = " ".join("PREPARE preptwo (integer) AS ",
-                       "SELECT keyid,nbpages FROM july_bigbook",
-                       "WHERE serie= 3 AND keyid > $1",
-                       "ORDER BY keyid ASC LIMIT 250")
+        qry = " ".join(["PREPARE preptwo (integer) AS ",
+                        "SELECT keyid,nbpages FROM july_bigbook",
+                        "WHERE serie= 3 AND keyid > $1",
+                        "ORDER BY keyid ASC LIMIT 250"])
 
         try:
             cursor.execute(qry)
