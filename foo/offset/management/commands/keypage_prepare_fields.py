@@ -67,7 +67,7 @@ class Command(BaseCommand):
             cursor.execute('EXECUTE preptwo (%s)' % (keyid))
             books = cursor.fetchall()
             for book in books:
-                keyid = book[1]
+                keyid = book[0]
                 # do want you want here
                 if book[1] > 500:
                     nb = nb + 1
