@@ -52,7 +52,7 @@ class Command(BaseCommand):
 
         qry = " ".join("PREPARE prepon (integer) AS ",
                        "SELECT * FROM july_bigbook",
-                       "WHERE class= 3 AND keyid > $1",
+                       "WHERE serie= 3 AND keyid > $1",
                        "ORDER BY keyid ASC LIMIT 250")
 
         try:

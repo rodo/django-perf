@@ -44,7 +44,7 @@ class Command(BaseCommand):
         keyid = 0
 
         while True:
-            queryset = BigBook.objects.filter(class=3)
+            queryset = BigBook.objects.filter(serie=3)
             books = queryset.filter(keyid__gt=keyid).order_by('keyid')[:250]
             for book in books:
                 keyid = book.keyid
