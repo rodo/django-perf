@@ -42,7 +42,7 @@ class Book(models.Model):
 
 class BookComment(models.Model):
     book = models.ForeignKey(Book)
-    sinopsis = models.TextField(blank=True)
+    synopsis = models.TextField(blank=True)
 
 
 class BigBook(models.Model):
@@ -56,5 +56,5 @@ class BigBook(models.Model):
     nbpages = models.IntegerField(default=0)
     editors = models.ManyToManyField(Editor, blank=True)
     translators = models.ManyToManyField(Translator, blank=True)
-    sinopsis = models.TextField(blank=True)
+    synopsis = models.TextField(blank=True)
     intro = models.TextField(blank=True)
