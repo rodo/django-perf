@@ -17,6 +17,14 @@ DATABASES = {
         'PASSWORD': 'changeme',
         'HOST': 'localhost',
         'PORT': '5432',
+    },
+    'logs': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'djangoperf',
+        'USER': 'foobar',
+        'PASSWORD': 'changeme',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -45,7 +53,7 @@ USE_I18N = True
 USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+USE_TZ = False
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -131,12 +139,13 @@ INSTALLED_APPS = (
     'foo.cerise',
     'foo.loader',
     'foo.indexes',
-    'foo.version',
+    'json_dbindex',
+    'foo.offset',
     'foo.july',
     # test novapost
     'foo.lorem',
     'reversion',
-#    'debug_toolbar'
+    'debug_toolbar'
 )
 
 DEVSERVER_TRUNCATE_SQL = False
@@ -192,3 +201,19 @@ LOGGING = {
         },
     }
 }
+
+
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+]

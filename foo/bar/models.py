@@ -1,6 +1,7 @@
 from django.db import models, connection
-from django_hstore import hstore
- 
+import jsonfield
+
+
 # Create your models here.
 
 class Preferences(models.Model):
@@ -18,6 +19,8 @@ class Company(models.Model):
     """
     name = models.CharField(max_length=300)
     country = models.CharField(max_length=300)
+    fooname = models.CharField(max_length=300, default='')
+    foobar = models.CharField(max_length=300, default='')
 
 class Organisation(models.Model):
     """The client as consummer
@@ -47,4 +50,13 @@ class Customer(Client):
     """
     class Meta:
         managed = False
+
+
+class Product(models.Model):
+    """
+    Based on the view bar_customer
+    """
+    title = models.CharField(max_length=300)
+    attrs = jsonfield.JSONField()
+
 

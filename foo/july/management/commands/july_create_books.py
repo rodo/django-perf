@@ -20,13 +20,12 @@
 import sys
 import os
 import time
+from django.core.management.base import BaseCommand
 from optparse import make_option
-from random import randrange
 from faker import Faker
 from django.db import connection
-from django.core.management.base import BaseCommand
-from django.contrib.sites.models import Site
 from foo.july.models import Editor, Author, Translator, Book, BigBook, BookComment
+from django.contrib.sites.models import Site
 
 
 class Command(BaseCommand):
@@ -46,37 +45,12 @@ class Command(BaseCommand):
         """
         f = Faker()
         nbvalues = options['nbvalues']
-        print "Editor : {}".format(Editor.objects.all().count())
-        print "Author : {}".format(Author.objects.all().count())
         print "Book : {}".format(Book.objects.all().count())
-        print "BigBook : {}".format(BigBook.objects.all().count())
-
-        nba = 0
-        datas = []
-        for aux in range(nbvalues):
-            datas.append(Author(last_name=f.last_name()[:30],
-                                first_name=f.first_name()[:30]))
-            nba += 1
-            if nba > 9:
-                Author.objects.bulk_create(datas)
-                datas = []
-                nba = 0
-
-        nba = 0
-        datas = []
-        for aux in range(nbvalues):
-            datas.append(Editor(name=f.last_name()[:30]))
-            nba += 1
-            if nba > 9:
-                Editor.objects.bulk_create(datas)
-                datas = []
-                nba = 0
 
         nba = 0
         datas = []
         author = Author.objects.all().last()
 
-        synopsis = " ".join(f.words(500))
         i = 1
         for aux in range(nbvalues):
             i += 1
@@ -89,33 +63,7 @@ class Command(BaseCommand):
                 Book.objects.bulk_create([Book(author=author,
                                                title=" ".join(f.words())[:30],
                                                nbpages=f.pyint())])
-                BookComment.objects.create(book_id=i, synopsis=synopsis)
                 datas = []
                 nba = 0
 
-        nba = 0
-        datas = []
-        author = Author.objects.all().last()
-
-
-        for aux in range(nbvalues):
-            datas.append(BigBook(author=author,
-                                 keyid=randrange(1,8000000),
-                                 title=" ".join(f.words())[:30],
-                                 nbpages=f.pyint()))
-            nba += 1
-            if nba > 9:
-                BigBook.objects.bulk_create(datas)
-                BigBook.objects.bulk_create([BigBook(author=author,
-                                                     keyid=randrange(1,8000000),
-                                                     title=" ".join(f.words())[:30],
-                                                     synopsis=synopsis,
-                                                     nbpages=f.pyint())])
-                datas = []
-                nba = 0
-
-
-        print "Editor : {}".format(Editor.objects.all().count())
-        print "Author : {}".format(Author.objects.all().count())
         print "Book : {}".format(Book.objects.all().count())
-        print "BigBook : {}".format(BigBook.objects.all().count())
