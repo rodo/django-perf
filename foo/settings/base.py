@@ -123,14 +123,18 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # external apps
     'django_extensions',
-    'django_faker',    
+    'django_faker',
+    'django_hstore',
     'devserver',
     #
     'foo.bar',
+    'foo.cerise',
     'foo.loader',
     'foo.indexes',
     'foo.version',
     'foo.july',
+    # test novapost
+    'foo.lorem',
     'reversion',
 #    'debug_toolbar'
 )

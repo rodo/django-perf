@@ -1,6 +1,17 @@
 from django.db import models, connection
-
+from django_hstore import hstore
+ 
 # Create your models here.
+
+class Preferences(models.Model):
+    """The client as consummer
+    """
+    name = models.CharField(max_length=300)
+    data = hstore.DictionaryField(db_index=True)
+    objects = hstore.HStoreManager()
+
+    def __unicode__(self):
+        return self.name
 
 class Company(models.Model):
     """The client as consummer
