@@ -51,10 +51,12 @@ class Command(BaseCommand):
         datas = []
         for aux in range(nbvalues):
             datas.append(Apple(name=f.last_name()[:30],
+                               indice=3,
                                data={'firstname': f.first_name(),
                                      'lastname': f.last_name()[:30]}))
 
             datas.append(Apple(name=f.last_name()[:30],
+                               indice=2,
                                data={'delta': 3}))
             nba += 1
             if nba > 9:

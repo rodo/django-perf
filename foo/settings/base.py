@@ -135,8 +135,11 @@ INSTALLED_APPS = (
     'django_hstore',
     'devserver',
     #
+    'foo.log',
     'foo.bar',
     'foo.cerise',
+    'foo.peach',
+    'foo.apple',
     'foo.loader',
     'foo.indexes',
     'json_dbindex',
