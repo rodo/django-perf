@@ -1,3 +1,5 @@
+[![Requirements Status](https://requires.io/github/rodo/django-perf/requirements.svg?branch=master)](https://requires.io/github/rodo/django-perf/requirements/?branch=master)
+
 django-perf
 ===========
 

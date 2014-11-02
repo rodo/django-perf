@@ -1,9 +1,8 @@
 from django.db import models
-from django_hstore import hstore
 
 
-class Apple(models.Model):
-    """The client as consummer
+class Small(models.Model):
+    """A small table
     """
     name = models.CharField(max_length=300)
     data = hstore.DictionaryField(db_index=True)
