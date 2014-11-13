@@ -145,15 +145,14 @@ INSTALLED_APPS = (
     'foo.peach',
     'foo.apple',
     'foo.lemon',
-    'foo.plum',
     'foo.manga',
+    'foo.plum',
+    'foo.tuna',
     'foo.loader',
     'foo.indexes',
     'json_dbindex',
     'foo.offset',
     'foo.july',
-    # test novapost
-    'foo.lorem',
     'reversion',
     'debug_toolbar'
 )
