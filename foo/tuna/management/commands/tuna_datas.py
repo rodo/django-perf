@@ -49,7 +49,6 @@ class Command(BaseCommand):
         f = Faker()
         nbvalues = options['nbvalues']
 
-
         nba = 0
         datas = []
         name = f.name()
@@ -61,25 +60,23 @@ class Command(BaseCommand):
         editor = Editor.objects.create(name=name,
                                        country=f.country())
 
-
         i = 1
         for aux in range(nbvalues):
             i += 1
-
             name = f.name()
 
             if str(i).endswith('5'):
                 author = Author.objects.create(name=name,
-                                       code=randrange(10),
-                                       epsilon=f.word())
+                                               code=randrange(10),
+                                               epsilon=f.word())
 
             if str(i).endswith('0'):
                 author = Author.objects.create(name=name,
-                                       code=f.pyint(),
-                                       epsilon=f.word())
+                                               code=f.pyint(),
+                                               epsilon=f.word())
 
                 editor = Editor.objects.create(name=name,
-                                       country=f.country())
+                                               country=f.country())
 
             datas.append(Book(author=author,
                               editor=editor,

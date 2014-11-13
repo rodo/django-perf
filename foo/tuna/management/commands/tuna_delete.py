@@ -50,15 +50,14 @@ class Command(BaseCommand):
         print "Editor : {}".format(Editor.objects.all().count())
         print "Author : {}".format(Author.objects.all().count())
 
-
-
     def regular_delete(self, code):
-
+        """Delete books with an evaluated QuerySet
+        """
         start = time.time()
 
         books = Book.objects.filter(code=code)
         count = books.count()
-        
+
         to_be_deleted_ref_list = [doc.id for doc in books]
 
         Book.objects.filter(pk__in=to_be_deleted_ref_list).delete()
@@ -67,20 +66,21 @@ class Command(BaseCommand):
         print "regular_delete {} time {} seconds".format(count, delta)
 
     def del_delete(self, code):
-        ids = []
-
+        """Delete books directly
+        """
         start = time.time()
 
         books = Book.objects.filter(code=code)
         count = books.count()
-        
+
         Book.objects.filter(code=code).delete()
 
         delta = time.time() - start
         print "del_delete {} time {} seconds".format(count, delta)
 
-
     def list_delete(self, code):
+        """Delete books with a non evaluated QuerySet
+        """
         ids = []
 
         start = time.time()
