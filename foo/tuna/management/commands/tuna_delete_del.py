@@ -48,7 +48,7 @@ class Command(BaseCommand):
         print "{} : {}".format(name, model.objects.all().count())
 
         # remove 10% of tuples, be in first
-        (count, delta) = utils.del_delete(code + 3, model)
+        (count, delta) = utils.del_delete(code, model)
         utils.print_console('del_delete', count, delta)
 
         print "{} : {}".format(name, model.objects.all().count())
