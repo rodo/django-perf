@@ -9,7 +9,16 @@ Utilisation
 * création des objets SQL avec **syncdb**
 * mise en place des triggers avec **trigger.sql**
 
-* regular_delete 7297 time 0.248842954636 seconds
-* del_delete 7322 time 0.0343799591064 seconds
-* list_delete time 7354 0.0488069057465 seconds
+Results
+=======
 
+Book : 110000
+Editor : 10053
+Author : 20103
+raw_delete      18140 time 0.0360250473022 seconds
+list_delete     18389 time 4.13527798653 seconds
+del_delete      18331 time 3.69426584244 seconds
+regular_delete  18421 time 4.57518696785 seconds
+Book : 54859
+Editor : 10053
+Author : 20103

@@ -51,6 +51,7 @@ class Command(BaseCommand):
 
         nba = 0
         datas = []
+        comps = []
         name = f.name()
 
         author = Author.objects.create(name=name,
@@ -85,22 +86,19 @@ class Command(BaseCommand):
                               title=" ".join(f.words())[:30],
                               code=randrange(6)))
 
-            company = Company.objects.create(name=name,
-                                             code=f.pyint(),
-                                             epsilon=f.word())
+            comps.append(Company(name=name,
+                                 code=randrange(6),
+                                 epsilon=f.word()))
 
             nba += 1
             if nba > 9:
+                Company.objects.bulk_create(comps)
                 Book.objects.bulk_create(datas)
-                Book.objects.bulk_create([Book(author=author,
-                                               deci=randrange(10),
-                                               centi=randrange(100),
-                                               milli=randrange(1000),
-                                               title=" ".join(f.words())[:30],
-                                               code=randrange(6))])
                 datas = []
+                comps = []
                 nba = 0
 
         print "Book : {}".format(Book.objects.all().count())
+        print "Company : {}".format(Company.objects.all().count())
         print "Editor : {}".format(Editor.objects.all().count())
         print "Author : {}".format(Author.objects.all().count())

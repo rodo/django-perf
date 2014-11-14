@@ -39,88 +39,89 @@ class Command(BaseCommand):
         """Lookup some objects
         """
         code = options['code']
+        self.doit(code, Book, 'Book')
+        self.doit(code, Company, 'Company')
 
-        print "Book : {}".format(Book.objects.all().count())
-        print "Editor : {}".format(Editor.objects.all().count())
-        print "Author : {}".format(Author.objects.all().count())
+    def doit(self, code, model, name):
+
+        print "{} : {}".format(name, model.objects.all().count())
 
         # remove 10% of tuples, be in first
-        (count, delta) = self.raw_delete(code + 3)
+        (count, delta) = self.raw_delete(code + 3, model)
         self.print_console('raw_delete', count, delta)
         # remove 10% of tuples, be in first
-        (count, delta) = self.list_delete(code + 2)
+        (count, delta) = self.list_delete(code + 2, model)
         self.print_console('list_delete', count, delta)
         # remove other 10% of tuples
-        (count, delta) = self.del_delete(code + 1)
+        (count, delta) = self.del_delete(code + 1, model)
         self.print_console('del_delete', count, delta)
         # remove again 10% of tuples
-        (count, delta) = self.regular_delete(code)
+        (count, delta) = self.regular_delete(code, model)
         self.print_console('regular_delete', count, delta)
 
-        print "Book : {}".format(Book.objects.all().count())
-        print "Editor : {}".format(Editor.objects.all().count())
-        print "Author : {}".format(Author.objects.all().count())
+        print "{} : {}".format(name, model.objects.all().count())
+
 
     def print_console(self, name, count, delta):
         print "{:<15} {} time {} seconds".format(name, count, delta)
         
-    def regular_delete(self, code):
+    def regular_delete(self, code, model):
         """Delete books with an evaluated QuerySet
         """
         start = time.time()
 
-        books = Book.objects.filter(code=code)
+        books = model.objects.filter(code=code)
         count = books.count()
 
         to_be_deleted_ref_list = [doc.id for doc in books]
 
-        Book.objects.filter(pk__in=to_be_deleted_ref_list).delete()
+        model.objects.filter(pk__in=to_be_deleted_ref_list).delete()
 
         delta = time.time() - start
         return (count, delta)
 
-    def del_delete(self, code):
+    def del_delete(self, code, model):
         """Delete books directly
         """
         start = time.time()
 
-        books = Book.objects.filter(code=code)
+        books = model.objects.filter(code=code)
         count = books.count()
 
-        Book.objects.filter(code=code).delete()
+        model.objects.filter(code=code).delete()
 
         delta = time.time() - start
         return (count, delta)
 
-    def list_delete(self, code):
+    def list_delete(self, code, model):
         """Delete books with a non evaluated QuerySet
         """
 
-        Book.objects.raw("SELECT 'list_delete'") 
+        model.objects.raw("SELECT 'list_delete'") 
         start = time.time()
 
-        books = Book.objects.filter(code=code)
+        books = model.objects.filter(code=code)
         count = books.count()
 
-        book_list = Book.objects.filter(code=code)
+        book_list = model.objects.filter(code=code)
 
-        Book.objects.filter(pk__in=book_list).delete()
+        model.objects.filter(pk__in=book_list).delete()
 
         delta = time.time() - start
 
         return (count, delta)
 
-    def raw_delete(self, code):
+    def raw_delete(self, code, model):
         """Delete books with raw  commands
         """
         start = time.time()
 
-        books = Book.objects.filter(code=code)
+        books = model.objects.filter(code=code)
         count = books.count()
 
-        Book.objects.raw("DELETE FROM tuna_editor_books WHERE book_id IN (SELECT id FROM tuna_book WHERE code=%s", [code])
-        Book.objects.raw("DELETE FROM tuna_sinopsis WHERE book_id IN (SELECT id FROM tuna_book WHERE code=%s", [code])
-        Book.objects.raw("DELETE FROM tuna_book WHERE code=%s", [code])
+        model.objects.raw("DELETE FROM tuna_editor_books WHERE book_id IN (SELECT id FROM tuna_book WHERE code=%s", [code])
+        model.objects.raw("DELETE FROM tuna_sinopsis WHERE book_id IN (SELECT id FROM tuna_book WHERE code=%s", [code])
+        model.objects.raw("DELETE FROM tuna_book WHERE code=%s", [code])
         delta = time.time() - start
 
         return (count, delta)
