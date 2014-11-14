@@ -26,7 +26,6 @@ def del_delete(code, model):
     """
     log = Log.objects.create(name='tuna_del_delete',
                              start=datetime.now(),
-                             info=str(model),
                              stop=datetime.now())
 
     start = time.time()
@@ -38,6 +37,7 @@ def del_delete(code, model):
 
     delta = time.time() - start
     log.stop = datetime.now()
+    log.info = '%s %d' % (model._meta.model_name, count)
     log.save()
 
     return (count, delta)
@@ -47,7 +47,6 @@ def direct_delete(code, model):
     """
     log = Log.objects.create(name='tuna_direct_delete',
                              start=datetime.now(),
-                             info=str(model),
                              stop=datetime.now())
     start = time.time()
 
@@ -58,6 +57,7 @@ def direct_delete(code, model):
 
     delta = time.time() - start
     log.stop = datetime.now()
+    log.info = '%s %d' % (model._meta.model_name, count)
     log.save()
 
     return (count, delta)
@@ -67,7 +67,6 @@ def list_delete(code, model):
     """
     log = Log.objects.create(name='tuna_list_delete',
                              start=datetime.now(),
-                             info=str(model),
                              stop=datetime.now())
     start = time.time()
 
@@ -80,6 +79,7 @@ def list_delete(code, model):
 
     delta = time.time() - start
     log.stop = datetime.now()
+    log.info = '%s %d' % (model._meta.model_name, count)
     log.save()
 
     return (count, delta)
@@ -89,7 +89,6 @@ def raw_delete_book(code, model):
     """
     log = Log.objects.create(name='tuna_raw_delete_book',
                              start=datetime.now(),
-                             info=str(model),
                              stop=datetime.now())
 
     start = time.time()
@@ -104,6 +103,7 @@ def raw_delete_book(code, model):
     cursor.execute("DELETE FROM tuna_book WHERE code=%s", [code])
     delta = time.time() - start
     log.stop = datetime.now()
+    log.info = '%s %d' % (model._meta.model_name, count)
     log.save()
 
     return (count, delta)
@@ -113,7 +113,6 @@ def raw_delete_company(code, model):
     """
     log = Log.objects.create(name='tuna_del_delete_company',
                              start=datetime.now(),
-                             info=str(model),
                              stop=datetime.now())
 
     start = time.time()
@@ -126,6 +125,7 @@ def raw_delete_company(code, model):
 
     delta = time.time() - start
     log.stop = datetime.now()
+    log.info = '%s %d' % (model._meta.model_name, count)
     log.save()
 
     return (count, delta)
