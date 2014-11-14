@@ -20,7 +20,7 @@ def regular_delete(code, model):
     return (count, delta)
 
 def del_delete(code, model):
-    """Delete books directly
+    """Delete books on Model
     """
     start = time.time()
 
@@ -32,11 +32,22 @@ def del_delete(code, model):
     delta = time.time() - start
     return (count, delta)
 
+def direct_delete(code, model):
+    """Delete books directly
+    """
+    start = time.time()
+
+    books = model.objects.filter(code=code)
+    count = books.count()
+
+    books.delete()
+
+    delta = time.time() - start
+    return (count, delta)
+
 def list_delete(code, model):
     """Delete books with a non evaluated QuerySet
     """
-
-    model.objects.raw("SELECT 'list_delete'") 
     start = time.time()
 
     books = model.objects.filter(code=code)
