@@ -21,7 +21,7 @@ from random import randrange
 import time
 import sys
 from django.core.management.base import BaseCommand
-from foo.tuna.models import Book, Editor, Author
+from foo.tuna.models import Book, Editor, Author, Sinopsis
 
 
 class Command(BaseCommand):
@@ -42,14 +42,23 @@ class Command(BaseCommand):
         print "Editor : {}".format(Editor.objects.all().count())
         print "Author : {}".format(Author.objects.all().count())
 
-        self.regular_delete(1)
-        self.del_delete(2)
-        self.list_delete(3)
+        # remove 10% of tuples, be in first
+        (count, delta) = self.list_delete(3)
+        self.print_console('list_delete', count, delta)
+        # remove other 10% of tuples
+        (count, delta) = self.del_delete(2)
+        self.print_console('del_delete', count, delta)
+        # remove again 10% of tuples
+        (count, delta) = self.regular_delete(1)
+        self.print_console('regular_delete', count, delta)
 
         print "Book : {}".format(Book.objects.all().count())
         print "Editor : {}".format(Editor.objects.all().count())
         print "Author : {}".format(Author.objects.all().count())
 
+    def print_console(self, name, count, delta):
+        print "{:<15} {} time {} seconds".format(name, count, delta)
+        
     def regular_delete(self, code):
         """Delete books with an evaluated QuerySet
         """
@@ -63,7 +72,7 @@ class Command(BaseCommand):
         Book.objects.filter(pk__in=to_be_deleted_ref_list).delete()
 
         delta = time.time() - start
-        print "regular_delete {} time {} seconds".format(count, delta)
+        return (count, delta)
 
     def del_delete(self, code):
         """Delete books directly
@@ -76,7 +85,7 @@ class Command(BaseCommand):
         Book.objects.filter(code=code).delete()
 
         delta = time.time() - start
-        print "del_delete {} time {} seconds".format(count, delta)
+        return (count, delta)
 
     def list_delete(self, code):
         """Delete books with a non evaluated QuerySet
@@ -92,4 +101,5 @@ class Command(BaseCommand):
         Book.objects.filter(pk__in=book_list).delete()
 
         delta = time.time() - start
-        print "{} time {} {} seconds".format('list_delete', count, delta)
+
+        return (count, delta)

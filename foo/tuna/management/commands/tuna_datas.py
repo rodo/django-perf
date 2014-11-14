@@ -26,7 +26,7 @@ from autofixture import AutoFixture
 from django.db import connection
 from django.core.management.base import BaseCommand
 from django.contrib.sites.models import Site
-from foo.tuna.models import Book, Author, Editor, Company
+from foo.tuna.models import Book, Author, Editor
 from faker import Faker
 
 
@@ -79,7 +79,9 @@ class Command(BaseCommand):
                                                country=f.country())
 
             datas.append(Book(author=author,
-                              editor=editor,
+                              deci=randrange(10),
+                              centi=randrange(100),
+                              milli=randrange(1000),
                               title=" ".join(f.words())[:30],
                               code=randrange(6)))
 
@@ -87,7 +89,9 @@ class Command(BaseCommand):
             if nba > 9:
                 Book.objects.bulk_create(datas)
                 Book.objects.bulk_create([Book(author=author,
-                                               editor=editor,
+                                               deci=randrange(10),
+                                               centi=randrange(100),
+                                               milli=randrange(1000),
                                                title=" ".join(f.words())[:30],
                                                code=randrange(6))])
                 datas = []
