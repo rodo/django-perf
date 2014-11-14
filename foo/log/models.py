@@ -8,6 +8,7 @@ class Log(models.Model):
     name = models.CharField(max_length=30)
     start = models.DateTimeField()
     stop = models.DateTimeField()
+    info = models.CharField(max_length=300)
 
     class Admin:
         pass
