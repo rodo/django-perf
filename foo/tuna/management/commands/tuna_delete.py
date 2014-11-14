@@ -21,15 +21,15 @@ from random import randrange
 import time
 import sys
 from django.core.management.base import BaseCommand
-from foo.tuna.models import Book, Editor, Author, Sinopsis
+from foo.tuna.models import Book, Editor, Author, Company, Sinopsis
 
 
 class Command(BaseCommand):
     help = 'Import datas'
     option_list = BaseCommand.option_list + (
-        make_option("-n",
-                    "--nbvalues",
-                    dest="nbvalues",
+        make_option("-c",
+                    "--code",
+                    dest="code",
                     type="int",
                     help="number of values to input",
                     default=1),
@@ -38,18 +38,23 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         """Lookup some objects
         """
+        code = options['code']
+
         print "Book : {}".format(Book.objects.all().count())
         print "Editor : {}".format(Editor.objects.all().count())
         print "Author : {}".format(Author.objects.all().count())
 
         # remove 10% of tuples, be in first
-        (count, delta) = self.list_delete(3)
+        (count, delta) = self.raw_delete(code + 3)
+        self.print_console('raw_delete', count, delta)
+        # remove 10% of tuples, be in first
+        (count, delta) = self.list_delete(code + 2)
         self.print_console('list_delete', count, delta)
         # remove other 10% of tuples
-        (count, delta) = self.del_delete(2)
+        (count, delta) = self.del_delete(code + 1)
         self.print_console('del_delete', count, delta)
         # remove again 10% of tuples
-        (count, delta) = self.regular_delete(1)
+        (count, delta) = self.regular_delete(code)
         self.print_console('regular_delete', count, delta)
 
         print "Book : {}".format(Book.objects.all().count())
@@ -90,16 +95,32 @@ class Command(BaseCommand):
     def list_delete(self, code):
         """Delete books with a non evaluated QuerySet
         """
-        ids = []
 
+        Book.objects.raw("SELECT 'list_delete'") 
         start = time.time()
 
         books = Book.objects.filter(code=code)
         count = books.count()
 
         book_list = Book.objects.filter(code=code)
+
         Book.objects.filter(pk__in=book_list).delete()
 
+        delta = time.time() - start
+
+        return (count, delta)
+
+    def raw_delete(self, code):
+        """Delete books with raw  commands
+        """
+        start = time.time()
+
+        books = Book.objects.filter(code=code)
+        count = books.count()
+
+        Book.objects.raw("DELETE FROM tuna_editor_books WHERE book_id IN (SELECT id FROM tuna_book WHERE code=%s", [code])
+        Book.objects.raw("DELETE FROM tuna_sinopsis WHERE book_id IN (SELECT id FROM tuna_book WHERE code=%s", [code])
+        Book.objects.raw("DELETE FROM tuna_book WHERE code=%s", [code])
         delta = time.time() - start
 
         return (count, delta)

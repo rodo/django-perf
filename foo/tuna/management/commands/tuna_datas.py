@@ -26,7 +26,7 @@ from autofixture import AutoFixture
 from django.db import connection
 from django.core.management.base import BaseCommand
 from django.contrib.sites.models import Site
-from foo.tuna.models import Book, Author, Editor
+from foo.tuna.models import Book, Author, Editor, Company
 from faker import Faker
 
 
@@ -84,6 +84,10 @@ class Command(BaseCommand):
                               milli=randrange(1000),
                               title=" ".join(f.words())[:30],
                               code=randrange(6)))
+
+            company = Company.objects.create(name=name,
+                                             code=f.pyint(),
+                                             epsilon=f.word())
 
             nba += 1
             if nba > 9:
