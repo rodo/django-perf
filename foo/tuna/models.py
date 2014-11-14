@@ -6,7 +6,7 @@ class Company(models.Model):
     No relation to any other model
     """
     name = models.CharField(max_length=300)
-    code = models.IntegerField()
+    code = models.IntegerField(db_index=True)
     epsilon = models.CharField(max_length=33)
 
 

@@ -40,15 +40,22 @@ class Command(BaseCommand):
         """Lookup some objects
         """
         code = options['code']
-        self.doit(code, Book, 'Book')
-        self.doit(code, Company, 'Company')
-
-    def doit(self, code, model, name):
-
+        name = "book"
+        model = Book
         print "{} : {}".format(name, model.objects.all().count())
 
         # remove 10% of tuples, be in first
-        (count, delta) = utils.raw_delete(code, model)
+        (count, delta) = utils.raw_delete_book(code, model)
+        utils.print_console('raw_delete', count, delta)
+
+        print "{} : {}".format(name, model.objects.all().count())
+
+        name = "company"
+        model = Company
+        print "{} : {}".format(name, model.objects.all().count())
+
+        # remove 10% of tuples, be in first
+        (count, delta) = utils.raw_delete_company(code, model)
         utils.print_console('raw_delete', count, delta)
 
         print "{} : {}".format(name, model.objects.all().count())

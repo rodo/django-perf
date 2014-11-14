@@ -1,4 +1,5 @@
 import time
+from django.db import connection
 
 def print_console(name, count, delta):
     print "{:<15} {} time {} seconds".format(name, count, delta)
@@ -49,7 +50,7 @@ def list_delete(code, model):
 
     return (count, delta)
 
-def raw_delete(code, model):
+def raw_delete_book(code, model):
     """Delete books with raw  commands
     """
     start = time.time()
@@ -57,9 +58,27 @@ def raw_delete(code, model):
     books = model.objects.filter(code=code)
     count = books.count()
 
-    model.objects.raw("DELETE FROM tuna_editor_books WHERE book_id IN (SELECT id FROM tuna_book WHERE code=%s", [code])
-    model.objects.raw("DELETE FROM tuna_sinopsis WHERE book_id IN (SELECT id FROM tuna_book WHERE code=%s", [code])
-    model.objects.raw("DELETE FROM tuna_book WHERE code=%s", [code])
+
+    cursor = connection.cursor()
+
+    cursor.execute("DELETE FROM tuna_editor_books WHERE book_id IN (SELECT id FROM tuna_book WHERE code=%s)", [code])
+    cursor.execute("DELETE FROM tuna_sinopsis WHERE book_id IN (SELECT id FROM tuna_book WHERE code=%s)", [code])
+    cursor.execute("DELETE FROM tuna_book WHERE code=%s", [code])
+    delta = time.time() - start
+
+    return (count, delta)
+
+def raw_delete_company(code, model):
+    """Delete companies with raw commands
+    """
+    start = time.time()
+
+    books = model.objects.filter(code=code)
+    count = books.count()
+
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM tuna_company WHERE code=%s", [code])
+
     delta = time.time() - start
 
     return (count, delta)
