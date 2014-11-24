@@ -155,8 +155,7 @@ INSTALLED_APPS = (
     'json_dbindex',
     'foo.offset',
     'foo.july',
-    'reversion',
-    'debug_toolbar'
+    'reversion'
 )
 
 DEVSERVER_TRUNCATE_SQL = False
