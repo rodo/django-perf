@@ -18,6 +18,12 @@ from django.views.generic.detail import DetailView
 class BookDetail(DetailView):
     template_name = 'july/book_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(BookDetail, self).get_context_data(**kwargs)
+        context['nb_editors'] = Editor.objects.all().count()
+        return context
+
+
 class BookDetailUsing(DetailView):
     template_name = 'july/book_detail.html'
 

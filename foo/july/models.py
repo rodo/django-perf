@@ -33,9 +33,8 @@ class Book(models.Model):
     """
     The books
     """
-
-    def Meta(self):
-        ordering = '-pk'
+    class Meta:
+        ordering = ['-pk']
     
     author = models.ForeignKey(Author)
     title = models.CharField(max_length=30)
