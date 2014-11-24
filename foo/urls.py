@@ -22,6 +22,7 @@ urlpatterns = patterns('',
                        url(r'^book/(?P<pk>\d+)$', DetailView.as_view(model=Book, template_name='default_detail.html')),
                        url(r'^july/book/$', ListView.as_view(model=Book, template_name='july/book_list.html',
                                                              paginate_by=10), name='july_books'),
+                       url(r'^july/book/create$', 'foo.july.views.create_book', name='july_book_create'),
                        url(r'^banana/', include('foo.banana.urls'))
 )
 

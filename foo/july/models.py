@@ -32,12 +32,18 @@ class Book(models.Model):
     """
     The books
     """
+
+    def Meta(self):
+        ordering = '-pk'
+    
     author = models.ForeignKey(Author)
     title = models.CharField(max_length=30)
     serie = models.IntegerField(default=0)
     nbpages = models.IntegerField(default=0)
     editors = models.ManyToManyField(Editor, blank=True)
     translators = models.ManyToManyField(Translator, blank=True)
+
+    
 
 
 class BookComment(models.Model):
