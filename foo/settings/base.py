@@ -1,3 +1,4 @@
+
 # Django settings for foo project.
 
 DEBUG = True
@@ -147,6 +148,7 @@ INSTALLED_APPS = (
     'foo.lemon',
     'foo.manga',
     'foo.plum',
+    'foo.aggtrigg',
     'foo.tuna',
     'foo.loader',
     'foo.indexes',

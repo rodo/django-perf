@@ -1,4 +1,5 @@
 from django.db import models
+from foo.aggtrigg.models import IntegerTriggerField
 
 
 class Apple(models.Model):
@@ -12,8 +13,10 @@ class Apple(models.Model):
     epsilon = models.CharField(max_length=30)
     zeta = models.CharField(max_length=30)
 
-    indice = models.IntegerField(default=0)
-    keyid = models.IntegerField(default=30, db_index=True)
+    indice = IntegerTriggerField(default=0)
+    indice.aggregate_trigger=['count']
+
+    keyid = IntegerTriggerField(default=30, db_index=True)
 
     bigrand = models.IntegerField(default=3000)
     tinyrand = models.IntegerField(default=3)
@@ -30,3 +33,8 @@ class Apple(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def create_trigger(self):
+        """Meta datas
+        """
+        

@@ -1,5 +1,1 @@
-
-
-
-==
-Utilisé aussi pour les IN avec un grand nombre d'argument
+Comparaison entre django-mptt et djjango-cte-trees
