@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block body %}
+July Book {{ object.id }}
+<ul>
+<li><a href="{% url 'bear_book' object.id %}">normal</a></li>
+<li><a href="{% url 'bear_book_opt' object.id %}">opt</a></li>
+</ul>
+
+<div>
+<ul>
+  <li>{{ object.editors.count }}</li>
+  <li>{{ object.editors.count }}</li>
+</ul>
+</div>
+{% endblock %}

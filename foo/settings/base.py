@@ -155,6 +155,7 @@ INSTALLED_APPS = (
     'json_dbindex',
     'foo.offset',
     'foo.july',
+    'foo.bear',
     'reversion'
 )
 
