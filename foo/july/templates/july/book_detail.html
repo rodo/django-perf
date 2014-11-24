@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block body %}
+July Book {{ object.id }}
+<div>
+<ul>
+  <li>{{ object.editors.count }}</li>
+</ul>
+{% if  nb_editors > 0 %}
+{{ nb_editors }}
+{% endif %}
+</div>
+{% endblock %}

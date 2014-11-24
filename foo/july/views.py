@@ -11,6 +11,20 @@ from django.http import HttpResponse
 from foo.july.models import Book, Author, Editor
 from faker import Faker
 from random import randrange
+from django.shortcuts import render
+from django.views.generic.detail import DetailView
+
+
+class BookDetail(DetailView):
+    template_name = 'july/book_detail.html'
+
+class BookDetailUsing(DetailView):
+    template_name = 'july/book_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(BookDetailUsing, self).get_context_data(**kwargs)
+        context['nb_editors'] = Editor.objects.using('readonly').count()
+        return context
 
 
 def create_book(request):

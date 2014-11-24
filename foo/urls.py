@@ -6,6 +6,8 @@ from django.views.generic.base import TemplateView
 from foo.bar.views import ClientDetail, ClientIdxDetail, ClientPrepDetail
 from foo.bar.models import Client
 from foo.july.models import Book
+from foo.july import views as julyviews
+from foo.bear import views as bearviews
 
 
 # Uncomment the next two lines to enable the admin:
@@ -20,9 +22,18 @@ urlpatterns = patterns('',
                        url(r'^prepared/(?P<pk>\d+)$', ClientPrepDetail.as_view()),
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^book/(?P<pk>\d+)$', DetailView.as_view(model=Book, template_name='default_detail.html')),
+                       url(r'^july/book/(?P<pk>\d+)$', julyviews.BookDetailUsing.as_view(model=Book), name='book_detail'),
                        url(r'^july/book/$', ListView.as_view(model=Book, template_name='july/book_list.html',
                                                              paginate_by=10), name='july_books'),
                        url(r'^july/book/create$', 'foo.july.views.create_book', name='july_book_create'),
+
+                       url(r'^bear/book/(?P<pk>\d+)$', bearviews.BookDetail.as_view(model=Book), name='bear_book'),
+                       url(r'^bear/book/(?P<pk>\d+)/opt$', bearviews.BookDetailOpt.as_view(model=Book), name='bear_book_opt'),
+
+                       url(r'^bear/book/$', ListView.as_view(model=Book,
+                                                             template_name='bear/book_list.html',
+                                                             paginate_by=10), name='bear_books'),
+                       
                        url(r'^banana/', include('foo.banana.urls'))
 )
 

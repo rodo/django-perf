@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
 
 
 class Editor(models.Model):
@@ -43,7 +44,13 @@ class Book(models.Model):
     editors = models.ManyToManyField(Editor, blank=True)
     translators = models.ManyToManyField(Translator, blank=True)
 
-    
+ 
+    def get_absolute_url(self):
+        """
+        Absolute url
+        """
+        return reverse('book_detail', args=[self.id])
+   
 
 
 class BookComment(models.Model):
