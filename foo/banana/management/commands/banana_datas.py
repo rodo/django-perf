@@ -26,7 +26,7 @@ from autofixture import AutoFixture
 from django.db import connection
 from django.core.management.base import BaseCommand
 from django.contrib.sites.models import Site
-from foo.banana.models import Fruit, Color, Apple, Owner, Variety
+from foo.banana.models import Fruit, Color, Banana, Owner, Variety
 
 
 class Command(BaseCommand):
@@ -57,9 +57,9 @@ class Command(BaseCommand):
         fixfruit = AutoFixture(Fruit)
         entries = fixfruit.create(nb)
 
-        fixapple = AutoFixture(Apple)
-        entries = fixapple.create(10 * nb)
+        fixbanana = AutoFixture(Banana)
+        entries = fixbanana.create(10 * nb)
 
         print Fruit.objects.all().count()
         print Color.objects.all().count()
-        print Apple.objects.all().count()
+        print Banana.objects.all().count()

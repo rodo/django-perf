@@ -54,7 +54,7 @@ USE_I18N = True
 USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = False
+USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -138,6 +138,10 @@ INSTALLED_APPS = (
     'autofixture',
     'cte_tree',
     'mptt',
+    'reversion',
+    #
+    'json_dbindex',    
+    'django_aggtrigg',
     #
     'foo.log',
     'foo.bar',
@@ -148,15 +152,14 @@ INSTALLED_APPS = (
     'foo.lemon',
     'foo.manga',
     'foo.plum',
-    'foo.aggtrigg',
     'foo.tuna',
     'foo.loader',
     'foo.indexes',
-    'json_dbindex',
     'foo.offset',
     'foo.july',
     'foo.bear',
-    'reversion'
+    'foo.dali',
+    'foo.grid'
 )
 
 DEVSERVER_TRUNCATE_SQL = False

@@ -28,7 +28,7 @@ class Color(models.Model):
     epsilon = models.CharField(max_length=30)
 
 
-class Apple(models.Model):
+class Lemon(models.Model):
     """An apple
     """
     name = models.CharField(max_length=300)

@@ -1,3 +1,6 @@
+#
+# bar
+# 
 from django.db import models, connection
 import jsonfield
 

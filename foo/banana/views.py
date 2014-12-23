@@ -1,34 +1,34 @@
 
 from django.views.generic import DetailView
 
-from foo.banana.models import Apple
+from foo.banana.models import Banana
 
 
 from django.views.generic import ListView
 
-class AppleListView(ListView):
-    model = Apple
+class BananaListView(ListView):
+    model = Banana
     paginate_by = 10
 
-class AppleRelatedListView(ListView):
-    model = Apple
+class BananaRelatedListView(ListView):
+    model = Banana
     paginate_by = 10
 
     def get_queryset(self):
-        apple = Apple.objects.all().select_related()
-        return apple
+        banana = Banana.objects.all().select_related()
+        return banana
 
 
-class AppleDetail(DetailView):
-    model = Apple
-    template_name = "banana/apple_detail.html"
+class BananaDetail(DetailView):
+    model = Banana
+    template_name = "banana/banana_detail.html"
 
-class AppleRelatedDetail(DetailView):
-    model = Apple
-    template_name = "banana/apple_detail.html"
+class BananaRelatedDetail(DetailView):
+    model = Banana
+    template_name = "banana/banana_detail.html"
 
     def get_object(self):
-        apple = Apple.objects.filter(pk=self.kwargs['pk']).select_related()
-        return apple[0]
+        banana = Banana.objects.filter(pk=self.kwargs['pk']).select_related()
+        return banana[0]
                     
 

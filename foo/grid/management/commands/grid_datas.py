@@ -20,14 +20,14 @@
 import sys
 import os
 import time
-import json
 from optparse import make_option
 from random import randrange
-from faker import Faker
+from autofixture import AutoFixture
 from django.db import connection
 from django.core.management.base import BaseCommand
 from django.contrib.sites.models import Site
-from foo.cerise.models import Cerise
+from foo.grid.models import Grid, GridForeign
+from faker import Faker
 
 
 class Command(BaseCommand):
@@ -41,31 +41,32 @@ class Command(BaseCommand):
                     default=10),
         )
 
-    def handle(self, *args, **options):
-        """
-        Make
-        """
-        f = Faker()
-        nbvalues = options['nbvalues']
-
-        nba = 0
-        datas = []
-        for aux in range(nbvalues):
-
-            dat = {'firstname': f.first_name(),
-                   'lastname': f.last_name()[:30]}
+    def randarray(self):
+        nbv = randrange(20)+1
+        i = 0
+        dat = []
+        while i < nbv:
+            i += 1
+            dat.append(1+randrange(20000))
+        return dat
             
-            datas.append(Cerise(name=f.last_name()[:30],
-                                data=dat,
-                                indice=2,
-                                objtxt=json.dumps(dat)))
+    def handle(self, *args, **options):
+        """Use autofixture to load datas
+        """
+        nbvalues = options['nbvalues']
+        f = Faker()
+        datasa = []
+        datasi = []
+        i = 1
+        nba = 0
+        for aux in range(nbvalues):
+            tags = self.randarray()
+            old = ",%s," % (",".join([str(b) for b in tags]))
+            grid = Grid.objects.create(name=f.name(),
+                                       alpha=f.word(),
+                                       old=old,
+                                       tags=tags)
 
-            datas.append(Cerise(name=f.last_name()[:30],
-                                indice=3,                                
-                                data={'delta': 3}))
-            nba += 1
-            if nba > 9:
-                Cerise.objects.bulk_create(datas)
-                datas = []
-                nba = 0
-
+            for tag in tags:
+                GridForeign.objects.create(tag=tag,
+                                           grid_id=grid.id)

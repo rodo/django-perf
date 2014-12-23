@@ -2,12 +2,14 @@ from django.db import models
 from django_hstore import hstore
 
 
-class Apple(models.Model):
-    """The client as consummer
+class Cerise(models.Model):
+    """Simple model
     """
     name = models.CharField(max_length=300)
-    data = hstore.DictionaryField(db_index=True)
     indice = models.IntegerField(default=0)
+    data = hstore.DictionaryField(db_index=True, blank=True, null=True)
+    objtxt = models.TextField()
+
     objects = hstore.HStoreManager()
 
     def __unicode__(self):

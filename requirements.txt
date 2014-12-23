@@ -16,6 +16,8 @@ django-versioning==0.7.5.0
 django-autofixture==0.9.1
 django-mptt==0.6.1
 django-cte-trees==1.0b1
+djorm-ext-core==0.7
+djorm-ext-expressions==0.6
 fake-factory==0.4.2
 flower==0.7.3
 kombu==3.0.24

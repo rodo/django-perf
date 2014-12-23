@@ -16,17 +16,11 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-
-import sys
-import os
-import time
 from optparse import make_option
 from random import randrange
 from faker import Faker
-from django.db import connection
 from django.core.management.base import BaseCommand
-from django.contrib.sites.models import Site
-from foo.manga.models import Category
+from foo.manga.models import Category, Genre
 
 
 class Command(BaseCommand):
@@ -38,6 +32,12 @@ class Command(BaseCommand):
                     type="int",
                     help="number of values to input",
                     default=10),
+        make_option("-c",
+                    "--childs",
+                    dest="childs",
+                    type="int",
+                    help="number of childs to input",
+                    default=randrange(10)),
         )
 
     def handle(self, *args, **options):
@@ -47,24 +47,30 @@ class Command(BaseCommand):
         f = Faker()
         nbvalues = options['nbvalues']
 
-        nba = 0
-        datas = []
+        childs = options  ['childs']
+        catid = randrange(10)
+        name = f.name()
 
-        root = Category.objects.create(name)
-        
+        root = Category.objects.create(name=name,
+                                       catid=catid)
+
+        moot = Genre.objects.create(name=name,
+                                    catid=catid)
+
         for aux in range(nbvalues):
+            parent = root
+            marent = moot
+            for child in range(childs):
+                catid = randrange(10)
+                name = f.name()
 
-            Category.objects.create(name=f.last_name()[:30],
-                              alpha = word,
-                              alphax = word,
-                              alphatx = word,
-                              resumex = words,
-                              resume = words))
+                parent = Category.objects.create(name=name,
+                                                 catid=catid,
+                                                 parent=parent)
 
-            nba += 1
-            if nba > 9:
-                Category.objects.bulk_create(datas)
-                datas = []
-                nba = 0
+                marent = Genre.objects.create(name=name,
+                                              catid=catid,
+                                              parent=marent)
 
-        print Plum.objects.all().count()
+        print Category.objects.all().count()
+        print Genre.objects.all().count()

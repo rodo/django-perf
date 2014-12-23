@@ -3,13 +3,13 @@ from django.conf import settings
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 
-from foo.banana.models import Apple
-from foo.banana.views import AppleDetail, AppleRelatedDetail, AppleListView, AppleRelatedListView
+from foo.banana.models import Banana
+from foo.banana.views import BananaDetail, BananaRelatedDetail, BananaListView, BananaRelatedListView
 
 urlpatterns = patterns('',
-                       url(r'^$', AppleListView.as_view(model=Apple)),
-                       url(r'^detail$', AppleListView.as_view(model=Apple)),
-                       url(r'^related$', AppleRelatedListView.as_view(model=Apple)),
-                       url(r'^(?P<pk>\d+)$', DetailView.as_view(model=Apple)),
-                       url(r'^(?P<pk>\d+)/detail$', AppleDetail.as_view()),
-                       url(r'^(?P<pk>\d+)/related$', AppleRelatedDetail.as_view()))
+                       url(r'^$', BananaListView.as_view(model=Banana)),
+                       url(r'^detail$', BananaListView.as_view(model=Banana)),
+                       url(r'^related$', BananaRelatedListView.as_view(model=Banana)),
+                       url(r'^(?P<pk>\d+)$', DetailView.as_view(model=Banana)),
+                       url(r'^(?P<pk>\d+)/detail$', BananaDetail.as_view()),
+                       url(r'^(?P<pk>\d+)/related$', BananaRelatedDetail.as_view()))

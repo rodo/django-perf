@@ -9,3 +9,10 @@ class Plum(models.Model):
     alpha = models.CharField(max_length=100)
     resumex = models.TextField(db_index=True)
     resume = models.TextField()
+    created = models.DateTimeField()
+
+class Plumi(models.Model):
+    """
+    """
+    name = models.CharField(max_length=300)
+    created = models.DateTimeField()

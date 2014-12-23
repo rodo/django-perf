@@ -79,25 +79,12 @@ class Command(BaseCommand):
                 editor = Editor.objects.create(name=name,
                                                country=f.country())
 
-            datas.append(Book(author=author,
-                              deci=randrange(10),
-                              centi=randrange(100),
-                              milli=randrange(1000),
-                              name=" ".join(f.words())[:30],
-                              title=" ".join(f.words())[:120],
-                              code=randrange(6)))
-
-            comps.append(Company(name=name,
-                                 code=randrange(6),
-                                 epsilon=f.word()))
-
-            nba += 1
-            if nba > 9:
-                Company.objects.bulk_create(comps)
-                Book.objects.bulk_create(datas)
-                datas = []
-                comps = []
-                nba = 0
+            Book.objects.create(author=author,
+                                deci=randrange(10),
+                                centi=randrange(100),
+                                milli=randrange(1000),
+                                title=" ".join(f.words())[:30],
+                                code=randrange(6))
 
         print "Book : {}".format(Book.objects.all().count())
         print "Company : {}".format(Company.objects.all().count())

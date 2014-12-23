@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.sites.models import Site
 
 # Create your models here.
 
@@ -40,5 +41,3 @@ class BigItem(models.Model):
     price3 = models.FloatField()
     latitude = models.FloatField()
     longitude = models.FloatField()
-
-

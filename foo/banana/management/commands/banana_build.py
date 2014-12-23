@@ -26,7 +26,7 @@ from autofixture import AutoFixture
 from django.db import connection
 from django.core.management.base import BaseCommand
 from django.contrib.sites.models import Site
-from foo.banana.models import Fruit, Color, Apple, Owner, Variety
+from foo.banana.models import Fruit, Color, Banana, Owner, Variety
 
 
 class Command(BaseCommand):
@@ -46,11 +46,11 @@ class Command(BaseCommand):
         nb = options['nbvalues']
 
         ids = []
-        for idd in Apple.objects.values_list('id'):
+        for idd in Banana.objects.values_list('id'):
             ids.append(idd[0])
 
-        apples = Apple.objects.all()
+        bananas = Banana.objects.all()
 
-        print len(apples)
+        print len(bananas)
 
-        print Apple.objects.filter(id__in=apples).query
+        print Banana.objects.filter(id__in=bananas).query

@@ -1,5 +1,7 @@
 from django.db import models
-from foo.aggtrigg.models import IntegerTriggerField
+from django_aggtrigg.models import IntegerTriggerField
+from django_aggtrigg.models import FloatTriggerField
+from django_aggtrigg.models import AggTriggManager
 
 
 class Apple(models.Model):
@@ -14,7 +16,10 @@ class Apple(models.Model):
     zeta = models.CharField(max_length=30)
 
     indice = IntegerTriggerField(default=0)
-    indice.aggregate_trigger=['count']
+    indice.aggregate_trigger=['count','min']
+
+    mark = FloatTriggerField(default=0)
+    indice.aggregate_trigger=['count','min']
 
     keyid = IntegerTriggerField(default=30, db_index=True)
 
@@ -31,6 +36,8 @@ class Apple(models.Model):
     synopsis = models.TextField(blank=True)
     intro = models.TextField(blank=True)
 
+    objects = AggTriggManager()
+
     def __unicode__(self):
         return self.name
 
@@ -38,3 +45,10 @@ class Apple(models.Model):
         """Meta datas
         """
         
+class Golden(models.Model):
+    """An apple
+    """
+    indice = models.IntegerField(default=0)
+
+    mark = FloatTriggerField(default=0)
+

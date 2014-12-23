@@ -28,11 +28,12 @@ class Color(models.Model):
     epsilon = models.CharField(max_length=30)
 
 
-class Apple(models.Model):
+class Banana(models.Model):
     """An apple
     """
     name = models.CharField(max_length=300)
     alpha = models.CharField(max_length=30)
+    code = models.IntegerField()
     color = models.ForeignKey(Color)
     fruit = models.ForeignKey(Fruit)
     variety = models.ForeignKey(Variety)

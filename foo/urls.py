@@ -37,8 +37,10 @@ urlpatterns = patterns('',
                        url(r'^bear/book/$', ListView.as_view(model=Book,
                                                              template_name='bear/book_list.html',
                                                              paginate_by=10), name='bear_books'),
-                       
-                       url(r'^banana/', include('foo.banana.urls'))
+
+                       url(r'^banana/', include('foo.banana.urls')),
+                       url(r'^dali/', include('foo.dali.urls')),
+                       url(r'^kiwi/', include('foo.kiwi.urls'))
 )
 
 if settings.DEBUG:
@@ -46,4 +48,3 @@ if settings.DEBUG:
     urlpatterns += patterns('',
         url(r'^__debug__/', include(debug_toolbar.urls)),
     )
-
