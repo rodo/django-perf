@@ -33,3 +33,9 @@ django-jsonfield==0.9.13
 
 # may be remove
 django-json-dbindex==1.1.0
+
+#
+django-aggtrigg==0.6.5
+
+#
+djorm-pgarray==1.2
