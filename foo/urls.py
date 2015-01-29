@@ -6,6 +6,8 @@ from django.views.generic.base import TemplateView
 from foo.bar.views import ClientDetail, ClientIdxDetail, ClientPrepDetail
 from foo.bar.models import Client
 from foo.july.models import Book
+from foo.fish.models import Fish
+from foo.log.models import Log
 from foo.july import views as julyviews
 from foo.bear import views as bearviews
 
@@ -16,6 +18,10 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
                        url(r'^$', TemplateView.as_view(template_name="home.html")),
+                       url(r'^log/$', ListView.as_view(model=Log, queryset=Log.objects.all().order_by('-id'),
+                                                       paginate_by=20), name='log'),
+                       url(r'^fish/$', ListView.as_view(model=Fish,
+                                                       paginate_by=10), name='fish'),
                        url(r'^(?P<pk>\d+)$', DetailView.as_view(model=Client)),
                        url(r'^noindex/(?P<pk>\d+)$', ClientDetail.as_view()),
                        url(r'^index/(?P<pk>\d+)$', ClientIdxDetail.as_view()),

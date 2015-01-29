@@ -1,3 +1,48 @@
 Application de test pour diverses actions
+=========================================
 
-- grid : test djorm-ext-pgarray
+foo.apple
+=========
+Bench usage of update_fields
+
+foo.banana
+==========
+Bench usage of select_related
+
+foo.bar
+=======
+
+??
+
+foo.bear
+========
+
+Bad usage of count in templates
+
+foo.cerise
+==========
+???
+
+doo.dali
+========
+
+misc tests on templates
+
+foo.fish
+========
+
+ts_vectors versus like % with icontains, how to do full text search
+
+foo.grid
+========
+test djorm-ext-pgarray and djorm-array
+
+foo.july
+========
+
+JOIN tests and comparison
+
+- blah
+
+Using F queries :
+ Entry.objects.filter(pk=3).update(n_pingbacks=F('n_pingbacks') + 1)
