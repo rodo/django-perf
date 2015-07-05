@@ -1,1 +1,1 @@
-Bench usage of update_fields
+Global app to logs tests results

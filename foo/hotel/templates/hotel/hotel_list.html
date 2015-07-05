@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
+<title></title>
+</head>
+
+<body>
+
+<ul>
+  <li><a href="{% url 'hotel' %}">Main</a>
+  <li><a href="noorder">No Order</a>
+  </ul>
+  {% if object_list.count %}
+  <b>Found {{ object_list.count }} objects</b>
+
+  <table>
+    <tr>
+      <td>object.name</td>
+      <td>object.indice</td>
+      <td>object.uppername</td>
+    </tr>
+    {% for object in object_list %}
+    <tr>
+      <td>{{object.name}}</td>
+      <td>{{object.indice}}</td>
+      <td>{{object.uppername}}</td>      
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+  <pre>
+    def get_queryset(self):
+        qry = Hotel.objects.filter(color__indice=3).filter(indice__gt=3).select_related('skin','door').order_by('indice')[:10]
+        # First remove all columns
+        qry.query.clear_select_clause()
+        qry.query.add_fields(['name','color__name'])
+        # 
+        return qry
+</pre>
+<hr>
+<address></address>
+<!-- hhmts start -->Last modified: Mon Jun 22 09:01:11 CEST 2015 <!-- hhmts end -->
+</body> </html>

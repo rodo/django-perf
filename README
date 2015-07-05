@@ -19,14 +19,31 @@ foo.bear
 
 Bad usage of count in templates
 
+foo.caribou
+===========
+
+Test django-pagination
+
 foo.cerise
 ==========
-???
 
-doo.dali
+Usage of hstore, and JSONField
+
+foo.dali
 ========
 
 misc tests on templates
+
+foo.duck
+========
+
+Test UPDATE RETURNING
+
+foo.elephant
+========
+
+Test of https://github.com/initcrash/django-denorm
+Denormalize models
 
 foo.fish
 ========
@@ -41,6 +58,38 @@ foo.july
 ========
 
 JOIN tests and comparison
+
+foo.kiwi
+========
+Tests on compressor, NOTHING DONE YET
+
+foo.lemon
+=========
+
+Test filter __in with a huge nb of argument, compare evaluated queries
+to non evaluated queries
+
+foo.manga
+=========
+
+Comparaison entre django-mptt et django-cte-trees
+
+foo.peach
+=========
+
+Bench usage of TRUNCATE pg command
+
+foo.tuna
+========
+
+Different methods to DELETE huge amount of datas
+
+
+hotel
+=====
+
+Serialization de collections d'objets en JSON
+
 
 - blah
 
