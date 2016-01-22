@@ -79,6 +79,11 @@ foo.peach
 
 Bench usage of TRUNCATE pg command
 
+foo.pear
+========
+
+Test pg_shard compatibility with Django
+
 foo.tuna
 ========
 
